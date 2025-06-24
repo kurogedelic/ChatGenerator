@@ -13,6 +13,7 @@
     "export:ep2": "node index.js export dtm-episode2-chat.md",
     "export:image-test": "node index.js export image-test.md",
     "export:file": "node index.js export",
+    "build:docs": "node build-docs.js",
     "start": "npm run preview"
   },
   "dependencies": {

@@ -67,3 +67,7 @@ character:direction:iconType:bubbleType "message"
 - Each section (divided by `---`) is exported as a separate PNG file
 - Preview server serves static assets from `/icons` and `/res` directories
 - Export functionality dynamically adjusts viewport height based on content
+
+## Character Configuration Notes
+
+- Use `character_speech_corpus.yaml` as a reference for establishing consistent character settings
