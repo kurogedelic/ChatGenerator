@@ -30,7 +30,7 @@ program
 	.version(version)
 	.description("Simple chat image generator with live preview")
 	.option("-c, --characters <path>", "Characters JSON file", "characters.json")
-	.option("-o, --output <dir>", "Output directory", "output")
+	.option("-o, --output <dir>", "Output directory", "docs")
 	.option("-w, --watch", "Watch mode (auto-update on file changes)", false)
 	.option("-p, --port <number>", "Preview server port", "3000");
 
@@ -48,6 +48,14 @@ program
 	.action((file, options) => {
 		const opts = { ...program.opts(), ...options };
 		exportImages(file, opts);
+	});
+
+program
+	.command("html <file>")
+	.description("Export chat as HTML file")
+	.action((file, options) => {
+		const opts = { ...program.opts(), ...options };
+		exportHTML(file, opts);
 	});
 
 program
@@ -276,13 +284,6 @@ function generateChatHTML(sections, characters, isExport = false) {
 	sections.forEach((section, sectionIndex) => {
 		html += `<div class="chat-container" id="section-${sectionIndex + 1}">`;
 
-		if (section.title && section.title.trim()) {
-			html += `<h1 class="chat-title">${section.title}</h1>`;
-		}
-
-		if (section.subtitle && section.subtitle.trim()) {
-			html += `<h2 class="chat-subtitle">${section.subtitle}</h2>`;
-		}
 
 		// Add messages
 		section.messages.forEach((msg) => {
@@ -574,6 +575,51 @@ async function exportImages(filePath, options) {
 		);
 	} catch (error) {
 		console.error("Export error:", error);
+		process.exit(1);
+	}
+}
+
+/**
+ * Export chat as HTML file
+ * @param {string} file - The markdown file path
+ * @param {Object} options - Export options
+ */
+async function exportHTML(file, options) {
+	try {
+		const { characters = "characters.json", output = "docs" } = options;
+
+		console.log(`Exporting ${file} as HTML...`);
+
+		// Ensure output directory exists
+		if (!fs.existsSync(output)) {
+			fs.mkdirSync(output, { recursive: true });
+		}
+
+		// Read and parse the markdown file
+		const sections = parseMarkdownChat(file);
+		console.log(`Parsed ${sections.length} sections from ${file}`);
+
+		// Load characters config
+		let charactersConfig = DEFAULT_CHARACTERS;
+		if (fs.existsSync(characters)) {
+			charactersConfig = JSON.parse(fs.readFileSync(characters, "utf8"));
+			console.log(`Loaded characters from ${characters}`);
+		} else {
+			console.warn(`Characters file ${characters} not found. Using defaults.`);
+		}
+
+		// Generate HTML
+		const html = generateChatHTML(sections, charactersConfig, false);
+
+		// Save HTML file
+		const baseFilename = path.basename(file, path.extname(file));
+		const outputPath = path.join(output, `${baseFilename}.html`);
+		
+		fs.writeFileSync(outputPath, html, 'utf8');
+		console.log(`HTML exported to ${outputPath}`);
+
+	} catch (error) {
+		console.error("HTML export error:", error);
 		process.exit(1);
 	}
 }
