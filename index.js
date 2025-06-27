@@ -267,6 +267,12 @@ function generateChatHTML(sections, characters, isExport = false) {
 			"body { font-family: sans-serif; }\n.chat-bubble { border: 1px solid black; padding: 10px; margin: 10px; }";
 	}
 
+	// For export mode, convert absolute paths to relative paths
+	if (isExport) {
+		cssContent = cssContent.replace(/url\("?\/res\//g, 'url("./res/');
+		cssContent = cssContent.replace(/url\("?\/icons\//g, 'url("./icons/');
+	}
+
 	// Build HTML
 	let html = `
   <!DOCTYPE html>
@@ -305,7 +311,7 @@ function generateChatHTML(sections, characters, isExport = false) {
 			}
 
 			const iconHtml = usedIconPath
-				? `<img src="/${usedIconPath}" class="chat-icon-img" alt="${character.name}">`
+				? `<img src="${isExport ? './' : '/'}${usedIconPath}" class="chat-icon-img" alt="${character.name}">`
 				: `<div class="chat-icon-text">${character.emoji}</div>`;
 
 			// Simple bubble HTML structure
@@ -609,7 +615,7 @@ async function exportHTML(file, options) {
 		}
 
 		// Generate HTML
-		const html = generateChatHTML(sections, charactersConfig, false);
+		const html = generateChatHTML(sections, charactersConfig, true);
 
 		// Save HTML file
 		const baseFilename = path.basename(file, path.extname(file));

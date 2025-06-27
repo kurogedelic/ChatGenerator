@@ -1,0 +1,538 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Preview</title>
+    <style>/* Base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #fff; /* 背景色を変更 */
+	font-family: "Hiragino Sans", "Meiryo", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.chat-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.chat-title {
+	font-size: 1.5em;
+	color: #333333;
+	margin-bottom: 0.5em;
+}
+
+.chat-subtitle {
+	font-size: 1.2em;
+	color: #666666;
+	margin-bottom: 1em;
+}
+
+/* Message layout */
+.chat-message {
+	display: flex;
+	align-items: flex-start;
+	margin: 10px 0;
+	width: 100%;
+}
+
+.chat-message.right {
+	flex-direction: row-reverse;
+}
+
+/* Border-image bubble styles */
+.chat-bubble {
+	position: relative;
+	max-width: 70%;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+/* Normal bubble style */
+.chat-bubble {
+	border-width: 30px; /* 実際の表示サイズ */
+	border-style: solid;
+	border-image-slice: 60 fill;
+	border-image-width: 30px;
+	border-image-repeat: stretch;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* 各バブルスタイルとその向き */
+.chat-bubble.norm.left {
+	border-image-source: url("./res/bubble_norm_left.png");
+}
+
+.chat-bubble.norm.right {
+	border-image-source: url("./res/bubble_norm_right.png");
+}
+
+.chat-bubble.think.left {
+	border-image-source: url("./res/bubble_think_left.png");
+}
+
+.chat-bubble.think.right {
+	border-image-source: url("./res/bubble_think_right.png");
+}
+
+.chat-bubble.shout.left {
+	border-image-source: url("./res/bubble_shout_left.png");
+}
+
+.chat-bubble.shout.right {
+	border-image-source: url("./res/bubble_shout_right.png");
+}
+
+/* キャラクター別テキストカラー */
+.chat-bubble.mercury {
+	color: #1d91d9;
+}
+
+.chat-bubble.darkhair {
+	color: #535353;
+}
+
+.chat-bubble.blonde {
+	color: #84803e;
+}
+
+.chat-bubble.glasses {
+	color: #7a7a7a;
+}
+
+/* Character icons */
+.chat-icon {
+	width: 100px; /* アイコンサイズを大きく */
+	height: 100px;
+	min-width: 50px; /* Prevent icon shrinking */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 10px;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+.chat-icon-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Flip icons when bubble direction is right */
+.chat-message.right .chat-icon-img {
+	transform: scaleX(-1);
+}
+
+.chat-icon-text {
+	font-size: 24px;
+}
+
+/* Character specific styles - アイコン背景色を無効化 */
+/* Mercury */
+.chat-icon[style*="#89CFF0"] {
+	/* background-color: #89cff0; */
+}
+
+/* Glasses */
+.chat-icon[style*="#A0A0A0"] {
+	/* background-color: #a0a0a0; */
+}
+
+/* Dark Hair */
+.chat-icon[style*="#36454F"] {
+	/* background-color: #36454f; */
+}
+
+/* Blonde */
+.chat-icon[style*="#FFD700"] {
+	/* background-color: #ffd700; */
+}
+
+/* Page break for print */
+.page-break {
+	page-break-after: always;
+}
+
+/* アニメーション効果を任意にコメントアウト */
+/* Animations (preview only) */
+
+/* Markdown 画像のスタイル */
+.markdown-image {
+	max-width: 100%;
+	margin: 10px 0;
+	border-radius: 4px;
+	display: block;
+}
+
+/* Print settings */
+@media print {
+	body {
+		background-color: white !important;
+	}
+
+	.chat-container {
+		page-break-inside: avoid;
+	}
+}
+</style>
+  </head>
+  <body>
+  <div class="chat-container" id="section-1">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            うわ〜、今日、駅前めっちゃ人多くない？お祭りでもあるのかな？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            ねー！マジうるさい！でもさ、不思議じゃない？こんだけザワザワしてるのに、あんたの声はちゃーんと聞こえるんだよね。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            確かに！周りの人の話し声とか、車の音とか、いろんな音が混ざってるのに、なんであなたの声だけはっきり聞こえるんだろ？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それ！人間の脳が持つ、2つの超絶スキルのおかげよ！<strong>立体音響</strong>の仕組みと、<strong>カクテルパーティ効果</strong>っていう魔法！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-2">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            立体音響に、カクテルパーティ…？なんだか難しそう！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            大丈夫！要は、あんたの脳が、音の<strong>『場所』</strong>と<strong>『重要度』</strong>を、一瞬で判断してるってこと！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            場所と、重要度？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！まず脳は、音がどこから来てるか、その『場所』を特定するの。これが<strong>立体音響</strong>のキホン！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-3">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            どうやって場所を特定してるの？ヘッドホンのスピーカーは2つしかないのに、後ろから聞こえたりするし…
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それはね、あんたの<strong>両耳と頭</strong>が、最高のセンサーになってるからよ！脳は主に3つの手がかりを使ってるの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ３つの手がかり？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            まず、<strong>両耳に届く時間の差</strong>！右からの音は、右耳に届いてから、ほんの0.7ミリ秒くらい遅れて左耳に届くの。脳はこの超ミクロな差で『右だ！』ってわかるのよ。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            次に、<strong>両耳に届く音量の差</strong>！右からの音は、あんたの頭がカベになって、左耳には少しだけ小さく聞こえる。これもヒント！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そして最後に、<strong>耳たぶの複雑な形</strong>！この形が、音の方向によって周波数の聞こえ方を微妙〜に変えてて、脳はその『音色の変化』も聞いてるの！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            へぇ〜！時間と音量と、耳の形！その３つで、脳は音の地図を作ってるんだね！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-4">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            じゃあ、カクテルパーティ効果っていうのは何なの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            音の地図を作った上で、脳が『どの音が大事か』を判断して、その音だけを<strong>ロックオン</strong>する能力のこと！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ロックオン！？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！カクテルパーティみたいにガヤガヤした場所でも、話したい相手の声だけを脳が勝手に聞き取れる現象よ。まさに天然のノイズキャンセリング機能じゃん！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            すごい！だから、あたしはあなたの声がちゃんと聞こえるんだ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-5">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            でもさ、ぼーっとしてる時は、話しかけられても全然気づかないことあるよね？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それな！<strong>『注意』</strong>を向けてないと、この脳の超絶スキルも発動しないの。これを<strong>選択的注意</strong>って言うんだって。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            せんたくてきちゅうい…？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            でも面白いのが、人混みで全然関係ない話してても、誰かが自分の名前を呼んだら『えっ！？』ってなるでしょ？自分にとって超重要な情報は、脳が常に聞き耳を立ててんのよ。アンテナ張ってるわけ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            あ〜！だから好きなバンドの曲がお店でかかったりすると、すぐ気づくんだ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-6">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            音楽でも、この脳の仕組みって使われてるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_shout.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right shout">
+            使いまくりよ！音楽の<strong>ステレオミックス</strong>がまさにそれ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ステレオ？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！音楽作る人は、この脳の仕組みをハックして、ドラムを右に置いたり、ギターを左に置いたりする<strong>パンニング</strong>って技を使うの。そうすると、脳が『お、楽器がいろんな場所にいる！』って感じて、音楽が立体的になるわけ！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            最近の<strong>空間オーディオ</strong>とか<strong>Dolby Atmos</strong>は、さらに上下とか前後も再現して、もっとリアルな音響空間を作ってるのよ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-7">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ミュージシャンの人たちって、この能力すごそうだね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            マジですごいよ！バンドで演奏する時とか、他のメンバーの音を聞きながら、自分の演奏を合わせるじゃん？アレも立体音響の認識とカクテルパーティ効果の合わせ技なわけ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ジャズの即興演奏とか、まさにそうだね！あんなに音がたくさんあるのに、ちゃんとお互いの音を聞いて会話してるみたい！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            最近の研究だと、<strong>音楽をやってる人</strong>は、このカクテルパーティ効果がめっちゃ発達してるって分かってきたんだって！脳が鍛えられてるのよ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ってことは、音楽って、ただ楽しいだけじゃなくて、聞く力も育ててくれるんだ！最強じゃん！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-8">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            今度から街を歩く時、いろんな音に意識を向けてみよっと！『今は車の音に集中！』とか、『今はカフェの音楽に集中！』とか！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_shout.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right shout">
+            絶対面白いって！人間の脳は、いろんな音を同時に処理できる<strong>超並列処理マシン</strong>なの！だから、あんなに複雑な音楽も一瞬で『イイ！』って感じられるんだから！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            人間の脳って、思ってたよりずっとハイスペックなマシンなんだね！音楽聞くのが、もっともっと楽しくなりそう！
+          </div>
+        </div>
+      </div>
+  </body>
+  </html>
+  

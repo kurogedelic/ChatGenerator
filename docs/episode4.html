@@ -1,0 +1,538 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Preview</title>
+    <style>/* Base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #fff; /* 背景色を変更 */
+	font-family: "Hiragino Sans", "Meiryo", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.chat-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.chat-title {
+	font-size: 1.5em;
+	color: #333333;
+	margin-bottom: 0.5em;
+}
+
+.chat-subtitle {
+	font-size: 1.2em;
+	color: #666666;
+	margin-bottom: 1em;
+}
+
+/* Message layout */
+.chat-message {
+	display: flex;
+	align-items: flex-start;
+	margin: 10px 0;
+	width: 100%;
+}
+
+.chat-message.right {
+	flex-direction: row-reverse;
+}
+
+/* Border-image bubble styles */
+.chat-bubble {
+	position: relative;
+	max-width: 70%;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+/* Normal bubble style */
+.chat-bubble {
+	border-width: 30px; /* 実際の表示サイズ */
+	border-style: solid;
+	border-image-slice: 60 fill;
+	border-image-width: 30px;
+	border-image-repeat: stretch;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* 各バブルスタイルとその向き */
+.chat-bubble.norm.left {
+	border-image-source: url("./res/bubble_norm_left.png");
+}
+
+.chat-bubble.norm.right {
+	border-image-source: url("./res/bubble_norm_right.png");
+}
+
+.chat-bubble.think.left {
+	border-image-source: url("./res/bubble_think_left.png");
+}
+
+.chat-bubble.think.right {
+	border-image-source: url("./res/bubble_think_right.png");
+}
+
+.chat-bubble.shout.left {
+	border-image-source: url("./res/bubble_shout_left.png");
+}
+
+.chat-bubble.shout.right {
+	border-image-source: url("./res/bubble_shout_right.png");
+}
+
+/* キャラクター別テキストカラー */
+.chat-bubble.mercury {
+	color: #1d91d9;
+}
+
+.chat-bubble.darkhair {
+	color: #535353;
+}
+
+.chat-bubble.blonde {
+	color: #84803e;
+}
+
+.chat-bubble.glasses {
+	color: #7a7a7a;
+}
+
+/* Character icons */
+.chat-icon {
+	width: 100px; /* アイコンサイズを大きく */
+	height: 100px;
+	min-width: 50px; /* Prevent icon shrinking */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 10px;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+.chat-icon-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Flip icons when bubble direction is right */
+.chat-message.right .chat-icon-img {
+	transform: scaleX(-1);
+}
+
+.chat-icon-text {
+	font-size: 24px;
+}
+
+/* Character specific styles - アイコン背景色を無効化 */
+/* Mercury */
+.chat-icon[style*="#89CFF0"] {
+	/* background-color: #89cff0; */
+}
+
+/* Glasses */
+.chat-icon[style*="#A0A0A0"] {
+	/* background-color: #a0a0a0; */
+}
+
+/* Dark Hair */
+.chat-icon[style*="#36454F"] {
+	/* background-color: #36454f; */
+}
+
+/* Blonde */
+.chat-icon[style*="#FFD700"] {
+	/* background-color: #ffd700; */
+}
+
+/* Page break for print */
+.page-break {
+	page-break-after: always;
+}
+
+/* アニメーション効果を任意にコメントアウト */
+/* Animations (preview only) */
+
+/* Markdown 画像のスタイル */
+.markdown-image {
+	max-width: 100%;
+	margin: 10px 0;
+	border-radius: 4px;
+	display: block;
+}
+
+/* Print settings */
+@media print {
+	body {
+		background-color: white !important;
+	}
+
+	.chat-container {
+		page-break-inside: avoid;
+	}
+}
+</style>
+  </head>
+  <body>
+  <div class="chat-container" id="section-1">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ねえねえ、この前の「音の三要素」の話、すごく面白かった！でも、そもそも「音」って何なのかなって、もっと気になっちゃった！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            いい質問だね。音楽を理解するには、まず「音」そのものを知ることが大切かも。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            うん！音って、耳に聞こえるものだよね？でも、どうやって耳まで届くの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            音の正体は「振動」なんだ。物がブルブルって震えると、その振動が空気を伝わって僕たちの耳に届くんだよね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-2">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            例えば、ギターの弦を弾くと、弦が振動して空気を揺らすでしょ？その揺れが波みたいに広がっていくんだ。これを<strong>音波（おんぱ）</strong>って言うんだよ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            おんぱ！水の波紋みたいに、音も広がっていくんだね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm2.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            うん。音波は空気中をだいたい秒速340メートルくらいで進むんだ。だから雷が光ってから音が聞こえるまでに、ちょっと時間が空くんだよね。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            えっ！じゃあ宇宙には空気がないから、音も全然聞こえないってこと！？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            たぶん、そう。宇宙空間では音波を伝えるもの（媒質って言うんだけど）がないから、基本的にはシー…ンって静まりかえってると思うよ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-3">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            でも、その「空気の波」って、一体どうやって作ってるの？自然の音だけじゃなくて、スマホとかから出る音のこと！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            ふふ、それを専門にやってるのが「<strong>スピーカー</strong>」っていう装置なんだ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_surprise.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ええっ！？スピーカーって、<strong>空気をブルブルさせるマシン</strong>だったの！？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            うん、そんな感じかも。電気の信号を、空気の振動に変換する装置なんだよね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-4">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm2.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            仕組みは意外とシンプルでね。<strong>コイルと磁石と、あと紙（振動板）</strong>でできてるんだ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ええっ、紙！？ペラペラの紙で、あんなに大きな音が出るの！？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            うん。その紙の部分（コーンって言うんだ）が、音楽に合わせてすごく速く前後に動いて、空気を押したり引いたりしてるんだよ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            でも、どうしてそんなに速く動けるの？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-5">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            コイルに電気が流れると、フレミングの法則っていうので磁石の力で動くんだ。音楽の電気信号に合わせて、すっごく細かく、正確にね。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_surprise.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            うわ〜〜！電気の力で、目に見えない「ゆれ」を作ってるんだ！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            うん。その振動が空気を伝わって、僕たちの耳の中にある鼓膜を同じように震わせて、それが「音」として脳に伝わるんだ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-6">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            音って目に見えないけど、何か見る方法はないの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            直接は見えないけど、オシロスコープとかを使えば<strong>波形</strong>として視覚化できるかな。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            波形？どんなのだろ？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            うん、例えばこんな感じのグラフになるんだ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            わぁ、ほんとだ、波みたい！これが音の正体なの？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-7">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            これはすごく単純なサイン波っていう波形だけどね。実際の音楽は、もっともっと複雑な波形がいくつも重なり合ってるんだ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            波の形で、何がわかるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm2.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            この波の高さが<strong>振幅（しんぷく）</strong>で、音の大きさを表してるんだ。波が高いほど、大きな音になるんだよ。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            そして、波の繰り返す間隔が<strong>周波数（しゅうはすう）</strong>で、音の高さを決めるんだ。波の間隔が狭いほど高い音、広いほど低い音になるんだよね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-8">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            じゃあ、ドレミファソラシドって、全部この波の間隔が違うってこと？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            その通り。例えば、ピアノの真ん中の「ラ」の音は、だいたい440Hz（ヘルツ）っていう周波数なんだ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            よんひゃくよんじゅっ！？それって、1秒間に440回もブルブルしてるってこと！？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm2.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            うん。人間の目ではとても捉えられない速さだけど、耳はそれをちゃんと音の高さとして感じ取れるんだ。すごい器官だよね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-9">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ってことは、スピーカーって…<strong>音を「発明」してるんじゃなくて、CDとかのデータを空気の動きに「翻訳」してるだけ</strong>なんだ！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            そうそう！「電気→空気」の翻訳機って感じかな。すごく正確なね。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            じゃあさ、その逆はできないの？空気の動きを、電気に変えるの！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/glasses_norm.png" class="chat-icon-img" alt="Glasses">
+          </div>
+          <div class="chat-bubble glasses right norm">
+            ふふ、いいところに気づいたね。それが「マイク」の役割なんだ。今度はそっちの話をしてみようか。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            やった〜！なんか、だんだん世界の仕組みがわかってきた気がする〜！
+          </div>
+        </div>
+      </div>
+  </body>
+  </html>
+  

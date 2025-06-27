@@ -1,0 +1,835 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Preview</title>
+    <style>/* Base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #fff; /* 背景色を変更 */
+	font-family: "Hiragino Sans", "Meiryo", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.chat-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.chat-title {
+	font-size: 1.5em;
+	color: #333333;
+	margin-bottom: 0.5em;
+}
+
+.chat-subtitle {
+	font-size: 1.2em;
+	color: #666666;
+	margin-bottom: 1em;
+}
+
+/* Message layout */
+.chat-message {
+	display: flex;
+	align-items: flex-start;
+	margin: 10px 0;
+	width: 100%;
+}
+
+.chat-message.right {
+	flex-direction: row-reverse;
+}
+
+/* Border-image bubble styles */
+.chat-bubble {
+	position: relative;
+	max-width: 70%;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+/* Normal bubble style */
+.chat-bubble {
+	border-width: 30px; /* 実際の表示サイズ */
+	border-style: solid;
+	border-image-slice: 60 fill;
+	border-image-width: 30px;
+	border-image-repeat: stretch;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* 各バブルスタイルとその向き */
+.chat-bubble.norm.left {
+	border-image-source: url("./res/bubble_norm_left.png");
+}
+
+.chat-bubble.norm.right {
+	border-image-source: url("./res/bubble_norm_right.png");
+}
+
+.chat-bubble.think.left {
+	border-image-source: url("./res/bubble_think_left.png");
+}
+
+.chat-bubble.think.right {
+	border-image-source: url("./res/bubble_think_right.png");
+}
+
+.chat-bubble.shout.left {
+	border-image-source: url("./res/bubble_shout_left.png");
+}
+
+.chat-bubble.shout.right {
+	border-image-source: url("./res/bubble_shout_right.png");
+}
+
+/* キャラクター別テキストカラー */
+.chat-bubble.mercury {
+	color: #1d91d9;
+}
+
+.chat-bubble.darkhair {
+	color: #535353;
+}
+
+.chat-bubble.blonde {
+	color: #84803e;
+}
+
+.chat-bubble.glasses {
+	color: #7a7a7a;
+}
+
+/* Character icons */
+.chat-icon {
+	width: 100px; /* アイコンサイズを大きく */
+	height: 100px;
+	min-width: 50px; /* Prevent icon shrinking */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 10px;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+.chat-icon-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Flip icons when bubble direction is right */
+.chat-message.right .chat-icon-img {
+	transform: scaleX(-1);
+}
+
+.chat-icon-text {
+	font-size: 24px;
+}
+
+/* Character specific styles - アイコン背景色を無効化 */
+/* Mercury */
+.chat-icon[style*="#89CFF0"] {
+	/* background-color: #89cff0; */
+}
+
+/* Glasses */
+.chat-icon[style*="#A0A0A0"] {
+	/* background-color: #a0a0a0; */
+}
+
+/* Dark Hair */
+.chat-icon[style*="#36454F"] {
+	/* background-color: #36454f; */
+}
+
+/* Blonde */
+.chat-icon[style*="#FFD700"] {
+	/* background-color: #ffd700; */
+}
+
+/* Page break for print */
+.page-break {
+	page-break-after: always;
+}
+
+/* アニメーション効果を任意にコメントアウト */
+/* Animations (preview only) */
+
+/* Markdown 画像のスタイル */
+.markdown-image {
+	max-width: 100%;
+	margin: 10px 0;
+	border-radius: 4px;
+	display: block;
+}
+
+/* Print settings */
+@media print {
+	body {
+		background-color: white !important;
+	}
+
+	.chat-container {
+		page-break-inside: avoid;
+	}
+}
+</style>
+  </head>
+  <body>
+  <div class="chat-container" id="section-1">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            同じテンポの曲でも、「ノリが良い」曲と「ノリが悪い」曲があるのはなぜですか？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-2">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それは<strong>グルーブ</strong>の違いよ！<br>正確なリズムだけじゃなくて、微妙な「ゆらぎ」が音楽の魂を作ってるの♪
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-3">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ゆらぎ？正確じゃない方がいいってことですか？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-4">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そうなの！人間らしい微妙なタイミングのズレが、<br>音楽に生命力を与えてるのよ。<br>音楽にも<strong>命の鼓動</strong>があるのね♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            金髪ちゃん、同じBPMの曲でも「ノリが良い」って感じる曲とそうでない曲があるんですが、何が違うんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それは<strong>グルーブ</strong>の差よ！単純にテンポが同じっていうだけじゃ、音楽の魅力は決まらないの♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            グルーブって何ですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            音楽の<strong>「ノリ」</strong>や<strong>「うねり」</strong>のことよ。正確無比なメトロノームとは違う、人間らしい微妙なリズムの感覚なの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            人間らしいリズム？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！完璧に正確じゃなくて、ちょっと前のめりになったり、少し後ろに下がったりする、<strong>生きたリズム</strong>のことなのよ♪
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-5">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            でも、正確じゃない方がいいってことですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            正確性と表現力は別物よ。メトロノーム通りに演奏するのは基礎だけど、そこから先の<strong>表現</strong>がグルーブなの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            表現？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            例えば、ジャズドラマーは意図的にビートを少し後ろにずらして<strong>レイドバック</strong>したり、ロックドラマーは少し前に出して<strong>プッシュ</strong>したりするの♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            タイミングを意図的にずらしてるんですね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！この微妙なタイミングコントロールが、<br>音楽にキャラクターを与えるのよ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-6">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            レイドバックとプッシュって、どう違うんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            <strong>レイドバック</strong>は拍よりほんの少し遅らせること。リラックスした、大人っぽい感じになるの♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            遅らせると大人っぽくなるんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            余裕がある感じになるのよ。急いでない、ゆったりした雰囲気。ブルースやジャズでよく使われる技法なの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            確かにジャズは落ち着いた大人の雰囲気がありますね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            一方<strong>プッシュ</strong>は拍より少し早めること。前向きでエネルギッシュな感じになるの。ロックやパンクでよく聞くわよ♪
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-7">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            そんな微妙な違いを人間は感じ取れるんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            人間の聴覚ってすごく敏感なのよ。<strong>数ミリ秒</strong>の違いでも、無意識に感じ取ってるの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            数ミリ秒！？そんなに細かく？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！だからライブ演奏とレコーディングで印象が変わったり、同じ曲でもバンドによって全然違う感じになったりするのよ♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            生演奏の魅力って、そういう微妙なニュアンスにもあるんですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-8">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            グルーブを作るのはドラムだけですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            いえいえ、<strong>全楽器</strong>がグルーブに関わってるのよ。ベース、ギター、ピアノ、歌...みんなでグルーブを作り上げるの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            みんなで？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            <strong>ベース</strong>は低音でリズムの土台を作って、<strong>ドラム</strong>は拍を刻む。でもギターやピアノも、コードを弾くタイミングでグルーブに参加してるのよ♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            バンド全体でひとつのグルーブを作ってるんですね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そうそう！だから「息が合う」バンドは素晴らしいグルーブを生み出すの。楽器同士の会話みたいなものよ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-9">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ジャンルによってグルーブの特徴は違うんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            めちゃくちゃ違うわよ！<strong>ファンク</strong>は16分音符を強調したタイトなグルーブ、<strong>スウィング</strong>は3連符ベースの跳ねるようなグルーブなの♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ファンクって？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            ジェームス・ブラウンが開拓したジャンルよ。「ワン！」の1拍目を強烈に強調して、16分音符でカッティングするグルーブなの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            確かにファンクは体が勝手に動いちゃいますね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            <strong>レゲエ</strong>は2拍目と4拍目を強調する<strong>アフタービート</strong>。<strong>ラテン</strong>は複雑なポリリズムでうねるようなグルーブよ♪
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-10">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            電子音楽にもグルーブってあるんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            もちろん！<strong>クオンタイズ</strong>（音符を正確な位置に補正する機能）を使わずに、わざと人間らしいタイミングの揺れを残すのよ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            わざと不正確にするんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！<strong>ヒューマナイズ</strong>って機能で、プログラムされた音楽に人間らしさを加えるの。完璧すぎると機械的に聞こえちゃうからね♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            テクノロジーで人間らしさを再現してるんですね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            最近のDAWには<strong>グルーブテンプレート</strong>もあるのよ。有名ドラマーの演奏パターンを分析して、そのグルーブを他の楽器にも適用できるの。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-11">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            グルーブって文化的な違いもあるんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            絶対あるわよ！例えば<strong>ブラジル音楽</strong>の微妙なシンコペーション（拍をずらすテクニック）は、ブラジル人じゃないと表現が難しいって言われてるの♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            文化的な感覚なんですね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう。<strong>アフリカ系アメリカ人</strong>の音楽から生まれたブルース、ジャズ、ファンクのグルーブは、彼らの文化的背景と深く結びついてるのよ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            音楽って、その土地の文化や感性が込められてるんですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-12">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            グルーブ感を身につけるにはどうすればいいですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            まずは<strong>体で感じること</strong>よ！頭で理解しようとしないで、音楽に合わせて体を動かすの♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            体を動かす？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！手拍子、足踏み、肩揺らし...とにかく音楽と一体になること。グルーブは理論じゃなくて感覚なのよ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            確かに、踊ってる時って自然にグルーブを感じてますね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それから、いろんなジャンルの音楽を聞くこと。ジャズ、ファンク、レゲエ、アフリカ音楽...それぞれ違うグルーブの魅力があるから♪
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-13">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            グルーブが良いミュージシャンの特徴ってありますか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            <strong>リズムに対する集中力</strong>と<strong>他の楽器とのコミュニケーション能力</strong>かな。グルーブは一人では作れないものだから。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            コミュニケーション？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            ドラマーがベーシストの微妙なタイミングを感じ取ったり、ギタリストがドラマーの呼吸に合わせたり...まさに音楽的な会話なのよ♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            音楽って、技術だけじゃなくて、人と人との繋がりも大切なんですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-14">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            グルーブって、なぜこんなに人を魅了するんでしょうか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            人間の<strong>生体リズム</strong>と共鳴するからじゃないかな。心拍、呼吸、歩行...私たちの体も常にグルーブしてるのよ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            生体リズム？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            心臓は完璧に規則正しくなくて、感情や状況で微妙に変化するでしょ？この<strong>自然な揺らぎ</strong>が、音楽のグルーブと似てるのよ♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            だから良いグルーブを聞くと、生命力を感じるんですね！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-15">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left think">
+            グルーブって、音楽の技術を超えた、もっと深いものなんですね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そうよ〜！数値では測れない、でも確実に存在する音楽の魂。それがグルーブなのよ♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            これから音楽を聞く時、もっとグルーブを意識してみます！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            いいわね！でも考えすぎないで、まずは体で感じることから始めて。グルーブは頭じゃなくて、ハートで感じるものなのよ♪
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            グルーブは音楽の魂なんですね。正確なだけじゃない、人間らしい「生きたリズム」の大切さがよくわかりました。音楽がもっと身近に感じられそうです♪
+          </div>
+        </div>
+      </div>
+  </body>
+  </html>
+  

@@ -1,0 +1,538 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Preview</title>
+    <style>/* Base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #fff; /* 背景色を変更 */
+	font-family: "Hiragino Sans", "Meiryo", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.chat-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.chat-title {
+	font-size: 1.5em;
+	color: #333333;
+	margin-bottom: 0.5em;
+}
+
+.chat-subtitle {
+	font-size: 1.2em;
+	color: #666666;
+	margin-bottom: 1em;
+}
+
+/* Message layout */
+.chat-message {
+	display: flex;
+	align-items: flex-start;
+	margin: 10px 0;
+	width: 100%;
+}
+
+.chat-message.right {
+	flex-direction: row-reverse;
+}
+
+/* Border-image bubble styles */
+.chat-bubble {
+	position: relative;
+	max-width: 70%;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+/* Normal bubble style */
+.chat-bubble {
+	border-width: 30px; /* 実際の表示サイズ */
+	border-style: solid;
+	border-image-slice: 60 fill;
+	border-image-width: 30px;
+	border-image-repeat: stretch;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* 各バブルスタイルとその向き */
+.chat-bubble.norm.left {
+	border-image-source: url("./res/bubble_norm_left.png");
+}
+
+.chat-bubble.norm.right {
+	border-image-source: url("./res/bubble_norm_right.png");
+}
+
+.chat-bubble.think.left {
+	border-image-source: url("./res/bubble_think_left.png");
+}
+
+.chat-bubble.think.right {
+	border-image-source: url("./res/bubble_think_right.png");
+}
+
+.chat-bubble.shout.left {
+	border-image-source: url("./res/bubble_shout_left.png");
+}
+
+.chat-bubble.shout.right {
+	border-image-source: url("./res/bubble_shout_right.png");
+}
+
+/* キャラクター別テキストカラー */
+.chat-bubble.mercury {
+	color: #1d91d9;
+}
+
+.chat-bubble.darkhair {
+	color: #535353;
+}
+
+.chat-bubble.blonde {
+	color: #84803e;
+}
+
+.chat-bubble.glasses {
+	color: #7a7a7a;
+}
+
+/* Character icons */
+.chat-icon {
+	width: 100px; /* アイコンサイズを大きく */
+	height: 100px;
+	min-width: 50px; /* Prevent icon shrinking */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 10px;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+.chat-icon-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Flip icons when bubble direction is right */
+.chat-message.right .chat-icon-img {
+	transform: scaleX(-1);
+}
+
+.chat-icon-text {
+	font-size: 24px;
+}
+
+/* Character specific styles - アイコン背景色を無効化 */
+/* Mercury */
+.chat-icon[style*="#89CFF0"] {
+	/* background-color: #89cff0; */
+}
+
+/* Glasses */
+.chat-icon[style*="#A0A0A0"] {
+	/* background-color: #a0a0a0; */
+}
+
+/* Dark Hair */
+.chat-icon[style*="#36454F"] {
+	/* background-color: #36454f; */
+}
+
+/* Blonde */
+.chat-icon[style*="#FFD700"] {
+	/* background-color: #ffd700; */
+}
+
+/* Page break for print */
+.page-break {
+	page-break-after: always;
+}
+
+/* アニメーション効果を任意にコメントアウト */
+/* Animations (preview only) */
+
+/* Markdown 画像のスタイル */
+.markdown-image {
+	max-width: 100%;
+	margin: 10px 0;
+	border-radius: 4px;
+	display: block;
+}
+
+/* Print settings */
+@media print {
+	body {
+		background-color: white !important;
+	}
+
+	.chat-container {
+		page-break-inside: avoid;
+	}
+}
+</style>
+  </head>
+  <body>
+  <div class="chat-container" id="section-1">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ねえ！音楽を聴いてると、なんでか勝手に足でリズム取っちゃったり、体が揺れたりするのって、なんでかな？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-2">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            あー、それね！超自然なことじゃん！だって人間って、生まれながらの<strong>ビートメーカー</strong>なんだから！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-3">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ええっ！？あたしたちが、ビートメーカー！？どういうこと？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-4">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_shout.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right shout">
+            そうだよ！だって、あんたの体の中には、最強のドラムマシンが内蔵されてんじゃん！そう、<strong>心臓</strong>よ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-5">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            心臓！？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！あたしたちがママのお腹の中にいる時から、ずーっと聴いてる最初の音楽、それが心臓の『ドクン、ドクン』っていうビートなの。それが、人間のリズム感の原点なんだって！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            そっか！だから、音楽のビートを聴くと、安心したり、ワクワクしたりするんだ！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そゆこと！心臓のビートだけじゃないよ。呼吸するリズム、歩くリズム、話すリズム…あたしたちの生活って、リズムだらけなのよ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-6">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            音楽のリズムには、どんな種類があるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            基本は、<strong>2拍子</strong>、<strong>3拍子</strong>、<strong>4拍子</strong>だね！『イチ、ニ、イチ、ニ』って行進するのが2拍子、『イチ、ニ、サン』で優雅にくるくる回るのが3拍子のワルツ、あたしたちが普段聴いてるポップスやロックのほとんどは4拍子！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            拍子によって、体の動きが変わるんだね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！拍子っていうのは、強くなるアクセントの位置が違うの。『<strong>強</strong>・弱』の2拍子、『<strong>強</strong>・弱・弱』の3拍子、『<strong>強</strong>・弱・<strong>中強</strong>・弱』の4拍子、みたいにね。このアクセントの波が、ダンスのステップになるわけ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-7">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            でも、同じ4拍子でも、ロックとディスコじゃ全然ノリが違うよね？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            いいとこ気づいた！それは、<strong>テンポ</strong>（速さ）と、<strong>リズムパターン</strong>が違うからよ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            リズムパターン？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            ドラムで言うと、バスドラム（ドン）とスネア（パン）を、どこで鳴らすかってこと！ロックの基本が『ドン、パン、ドン、パン』なら、テクノとかハウスは『ドン、ドン、ドン、ドン』っていう<strong>4つ打ち</strong>が基本。このパターンの違いが、音楽のジャンルを作ってんのよ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-8">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            リズムで一番大事なことって、何？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それはね、<strong>グルーヴ</strong>よ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ぐるーゔ…？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            うん！メトロノームみたいに、カッチカチに正確なだけじゃ、いいリズムとは言えないの。ほんのちょっとだけ、音が後ろにズレてたり（レイドバック）、逆に前に突っ込んでたりする、人間らしい<strong>『揺らぎ』</strong>とか<strong>『タメ』</strong>のこと！このグルーヴがあると、音楽が生き物みたいに呼吸し始めるのよ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            だから、打ち込みの音楽でも、ちょっとタイミングをズラしたりするんだね！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-9">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            世界の音楽には、もっと変わったリズムがあるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_shout.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right shout">
+            ヤバいのがいっぱいあるよ！アフリカの音楽の<strong>ポリリズム</strong>とか、マジで脳がバグるから！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ぽりりずむ？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            例えば、右手で3拍子を叩きながら、左手で4拍子を叩く、みたいな！違うリズムが、同時に、当たり前のように進んでいくの。最初は『え、どこ！？』ってなるけど、慣れると最高に気持ちいいのよ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-10">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ラテン音楽のノリも独特だよね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            あれはね、<strong>クラーベ</strong>っていう、魔法のリズムパターンが隠されてんの。『タン、タ・タン、タン、タン・タ』みたいな、ちょっと非対称なリズムが、ずーっと根底に流れてるのよ。この『ズレ』が、腰を動かしたくなる秘密ってわけ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            なるほど！きっちりしてないからこそ、踊りたくなるんだ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-11">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            日本の音楽のリズムは、どうなの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            お祭りのお囃子とか、雅楽とかは、西洋音楽とは全然違うリズム感覚だよね。ビートをきっちり刻むんじゃなくて、<strong>『間（ま）』</strong>を大事にするの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            間…？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう、音と音の間の、何もない時間。その沈黙も、音楽の一部として味わうのよ。ジョン・ケージの『4分33秒』にも通じる、超クールな考え方じゃない？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-12">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            リズム感って、どうやったら良くなるかなぁ？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_shout.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right shout">
+            そんなの、頭で考えるだけじゃダメ！<strong>踊る！歌う！歩く！</strong>とにかく体で感じること！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ええ〜！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            ホントだって！音楽聴きながら、足踏みしたり、手拍子したりするだけで、全然違うから！階段を上る時も、『タン、タタ、タン』とか、自分でリズム作りながら上ると、マジでトレーニングになるよ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-13">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            そっか…。リズムって、音楽の理論っていうより、もっと、人間の体そのものに近いものなんだね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            その通り！リズムは音楽の<strong>背骨</strong>であり、<strong>心臓</strong>よ！メロディーやハーモニーがどんなにすごくても、リズムがダメなら、全部ダメ！さあ、理屈はいいから、このビートに合わせて、一緒に踊ろっ！
+          </div>
+        </div>
+      </div>
+  </body>
+  </html>
+  

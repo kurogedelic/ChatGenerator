@@ -1,0 +1,511 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Preview</title>
+    <style>/* Base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #fff; /* 背景色を変更 */
+	font-family: "Hiragino Sans", "Meiryo", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.chat-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.chat-title {
+	font-size: 1.5em;
+	color: #333333;
+	margin-bottom: 0.5em;
+}
+
+.chat-subtitle {
+	font-size: 1.2em;
+	color: #666666;
+	margin-bottom: 1em;
+}
+
+/* Message layout */
+.chat-message {
+	display: flex;
+	align-items: flex-start;
+	margin: 10px 0;
+	width: 100%;
+}
+
+.chat-message.right {
+	flex-direction: row-reverse;
+}
+
+/* Border-image bubble styles */
+.chat-bubble {
+	position: relative;
+	max-width: 70%;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+/* Normal bubble style */
+.chat-bubble {
+	border-width: 30px; /* 実際の表示サイズ */
+	border-style: solid;
+	border-image-slice: 60 fill;
+	border-image-width: 30px;
+	border-image-repeat: stretch;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* 各バブルスタイルとその向き */
+.chat-bubble.norm.left {
+	border-image-source: url("./res/bubble_norm_left.png");
+}
+
+.chat-bubble.norm.right {
+	border-image-source: url("./res/bubble_norm_right.png");
+}
+
+.chat-bubble.think.left {
+	border-image-source: url("./res/bubble_think_left.png");
+}
+
+.chat-bubble.think.right {
+	border-image-source: url("./res/bubble_think_right.png");
+}
+
+.chat-bubble.shout.left {
+	border-image-source: url("./res/bubble_shout_left.png");
+}
+
+.chat-bubble.shout.right {
+	border-image-source: url("./res/bubble_shout_right.png");
+}
+
+/* キャラクター別テキストカラー */
+.chat-bubble.mercury {
+	color: #1d91d9;
+}
+
+.chat-bubble.darkhair {
+	color: #535353;
+}
+
+.chat-bubble.blonde {
+	color: #84803e;
+}
+
+.chat-bubble.glasses {
+	color: #7a7a7a;
+}
+
+/* Character icons */
+.chat-icon {
+	width: 100px; /* アイコンサイズを大きく */
+	height: 100px;
+	min-width: 50px; /* Prevent icon shrinking */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 10px;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+.chat-icon-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Flip icons when bubble direction is right */
+.chat-message.right .chat-icon-img {
+	transform: scaleX(-1);
+}
+
+.chat-icon-text {
+	font-size: 24px;
+}
+
+/* Character specific styles - アイコン背景色を無効化 */
+/* Mercury */
+.chat-icon[style*="#89CFF0"] {
+	/* background-color: #89cff0; */
+}
+
+/* Glasses */
+.chat-icon[style*="#A0A0A0"] {
+	/* background-color: #a0a0a0; */
+}
+
+/* Dark Hair */
+.chat-icon[style*="#36454F"] {
+	/* background-color: #36454f; */
+}
+
+/* Blonde */
+.chat-icon[style*="#FFD700"] {
+	/* background-color: #ffd700; */
+}
+
+/* Page break for print */
+.page-break {
+	page-break-after: always;
+}
+
+/* アニメーション効果を任意にコメントアウト */
+/* Animations (preview only) */
+
+/* Markdown 画像のスタイル */
+.markdown-image {
+	max-width: 100%;
+	margin: 10px 0;
+	border-radius: 4px;
+	display: block;
+}
+
+/* Print settings */
+@media print {
+	body {
+		background-color: white !important;
+	}
+
+	.chat-container {
+		page-break-inside: avoid;
+	}
+}
+</style>
+  </head>
+  <body>
+  <div class="chat-container" id="section-1">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ♪ラララ〜ん…あれ？なんか、この音だけすっごく響くんだけど！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_question.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            ん？あんた、お風呂で歌の練習？えらいじゃん！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            そうなの！でも、ドレミの『レ』の音だけ、やけに大きく聞こえるんだよ！なんで！？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            あ〜、それね！<strong>共振（きょうしん）</strong>だよ！楽器作りのキホン中のキホンじゃん！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-2">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            きょーしん…？なにそれ？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            簡単に言うと、あんたの声とお風呂の空間が『超イイ感じ！』って意気投合しちゃったのよ！音と空間が一緒にノリノリで踊ってる感じ？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ええっ！？音と空間が！？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そうそう！ブランコって、タイミングよく押すと、ちっちゃい力でもめっちゃ大きく揺れるでしょ？アレと一緒！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            あ〜！わかる！タイミングが合うと、どんどん高くなる！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そ！あんたが出した声の波が、お風呂の壁に反射して、次の波とピッタリ重なって、どんどんデカくなるの！でも、その空間のサイズに合った高さの音じゃないと起きない、超ワガママな現象なんだよね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-3">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            じゃあ、お風呂の広さが変わったら、響く音も変わるってこと！？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_shout.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right shout">
+            大正解！それが<strong>固有振動数（こゆうしんどうすう）</strong>ってやつ！体育館みたいな広い場所だと低い音が、逆にお風呂みたいな狭い空間だと高い音が響きやすいの！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            へぇ〜！楽器も同じ仕組みなの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            当たり前じゃん！アコギのあの木のボディとか、バイオリンの胴体とか、ぜーんぶ共振で音をデカくしてんの！いわば、<strong>天然のアンプ</strong>ってわけ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-4">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            そっか！だからエレキギターは木の箱がなくても、おっきな音が出るんだ！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そゆこと！アコギはボディの共振が命だけど、エレキはピックアップっていうマイクで直接弦の音を拾うから、なんならボディは鳴らない方がノイズが少なくて都合いいくらいなのよ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            共振って、いいことばっかりじゃなさそうだね…？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            お、鋭いじゃん！そうなのよ、時には超ジャマなことになるわけ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-5">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            あー！ライブハウスとかで『キーン！』ってなるやつだ！耳痛いやつ！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それそれ！<strong>ハウリング</strong>って言って、スピーカーから出た音をマイクがまた拾って、それがグルグル増幅されちゃう最悪の共振ループ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            なるほど…。じゃあ、楽器作りって、その共振をうまくコントロールしてるってこと？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            まさに！例えばバイオリンの名器ストラディバリウスとかは、木の厚さとか、ボディに空いてる<strong>f字孔（えふじこう）</strong>の形で、どの音をどう響かせるか、完璧に計算されてるのよ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-6">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ピアノはどうなってるの？あんなおっきな箱全体が鳴ってるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            ピアノはね、後ろにある<strong>響板（きょうばん）</strong>っていうデカい木の板が主役なの。弦の音だけだとちっちゃいけど、この響板が共振することで、あの豊かでゴージャスな音になるわけ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            へぇ〜！じゃあ、古いピアノの音がちょっとまろやかになるのも…？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！木が古くなって乾燥したりすると、共振の仕方が変わるから、音も変わるの。それが『ビンテージの味』ってやつよ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-7">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            建物とかでも共振って起きるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            起きる起きる！てか、それが一番ヤバい！地震の揺れの周期と、ビルの揺れやすい周期がピッタリ合っちゃうと、とんでもない揺れになって倒れちゃうの。だから、そうならないように設計するのが超大事なんだって。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            こわ…！音楽とは大違いだね…。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            でも、コンサートホールは逆！どこに座っても音がキレイに響くように、わざと共振をデザインしてるのよ。音楽って、物理現象をうまくハックしてるんだよね！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-8">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            よーし！今夜、お風呂でドレミファソラシド全部試してみよっと！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_shout.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right shout">
+            それ絶対楽しいって！あんたの声に含まれてる<strong>倍音（ばいおん）</strong>も一緒に共振するから、ただの『レ』の音でも、すっごく豊かな響きに聞こえるはずだよ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ばいおん？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            基本の音の、2倍、3倍、4倍…って高さの音のこと！普段は混ざって聞こえてるんだけど、共振するとそいつらもデカくなるから、音が一気にリッチになるの！これが楽器の美しい音色の秘密ってわけ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            共振、奥が深い！音楽の世界って、まだまだ知らないことだらけだ〜！
+          </div>
+        </div>
+      </div>
+  </body>
+  </html>
+  

@@ -1,6 +1,4 @@
-<!--  音には性格がある？ -->
 
-(4コマが欠落してるけどそのまま)
 
 darkhair:right:norm "では今回は、『**音の三要素**』について解説いたしますわ。"
 
@@ -66,6 +64,6 @@ darkhair:right:smile "ふふ。よくわかってきましたわね。"
 
 mercury:left:relief "よ〜〜し！これで次に音楽聴くとき、ちょっとだけ“通ぶれる”気がする〜！"
 
-darkhair:right:norm2 "……調子に乗るとすぐ失敗しますわよ。"
+darkhair:right:norm2 "……調子に乗るとすぐ失敗するわよ。"
 
 mercury:left:shock "えっ！いきなり釘刺された！？"

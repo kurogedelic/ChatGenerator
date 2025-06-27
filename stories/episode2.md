@@ -52,4 +52,4 @@ darkhair:right:smile "お察しの通りですわ。<br>音にも**三要素**�
 
 mercury:left:shock "でた！！三要素！！"
 
-darkhair:right:norm2 "**次回は、その“音の三要素”について、ご案内いたしますわ。**"
+darkhair:right:norm2 "**次は、その“音の三要素”について、案内するわね。**"

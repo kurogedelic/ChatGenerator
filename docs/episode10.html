@@ -1,0 +1,502 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Preview</title>
+    <style>/* Base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #fff; /* 背景色を変更 */
+	font-family: "Hiragino Sans", "Meiryo", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.chat-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.chat-title {
+	font-size: 1.5em;
+	color: #333333;
+	margin-bottom: 0.5em;
+}
+
+.chat-subtitle {
+	font-size: 1.2em;
+	color: #666666;
+	margin-bottom: 1em;
+}
+
+/* Message layout */
+.chat-message {
+	display: flex;
+	align-items: flex-start;
+	margin: 10px 0;
+	width: 100%;
+}
+
+.chat-message.right {
+	flex-direction: row-reverse;
+}
+
+/* Border-image bubble styles */
+.chat-bubble {
+	position: relative;
+	max-width: 70%;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+/* Normal bubble style */
+.chat-bubble {
+	border-width: 30px; /* 実際の表示サイズ */
+	border-style: solid;
+	border-image-slice: 60 fill;
+	border-image-width: 30px;
+	border-image-repeat: stretch;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* 各バブルスタイルとその向き */
+.chat-bubble.norm.left {
+	border-image-source: url("./res/bubble_norm_left.png");
+}
+
+.chat-bubble.norm.right {
+	border-image-source: url("./res/bubble_norm_right.png");
+}
+
+.chat-bubble.think.left {
+	border-image-source: url("./res/bubble_think_left.png");
+}
+
+.chat-bubble.think.right {
+	border-image-source: url("./res/bubble_think_right.png");
+}
+
+.chat-bubble.shout.left {
+	border-image-source: url("./res/bubble_shout_left.png");
+}
+
+.chat-bubble.shout.right {
+	border-image-source: url("./res/bubble_shout_right.png");
+}
+
+/* キャラクター別テキストカラー */
+.chat-bubble.mercury {
+	color: #1d91d9;
+}
+
+.chat-bubble.darkhair {
+	color: #535353;
+}
+
+.chat-bubble.blonde {
+	color: #84803e;
+}
+
+.chat-bubble.glasses {
+	color: #7a7a7a;
+}
+
+/* Character icons */
+.chat-icon {
+	width: 100px; /* アイコンサイズを大きく */
+	height: 100px;
+	min-width: 50px; /* Prevent icon shrinking */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 10px;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+.chat-icon-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Flip icons when bubble direction is right */
+.chat-message.right .chat-icon-img {
+	transform: scaleX(-1);
+}
+
+.chat-icon-text {
+	font-size: 24px;
+}
+
+/* Character specific styles - アイコン背景色を無効化 */
+/* Mercury */
+.chat-icon[style*="#89CFF0"] {
+	/* background-color: #89cff0; */
+}
+
+/* Glasses */
+.chat-icon[style*="#A0A0A0"] {
+	/* background-color: #a0a0a0; */
+}
+
+/* Dark Hair */
+.chat-icon[style*="#36454F"] {
+	/* background-color: #36454f; */
+}
+
+/* Blonde */
+.chat-icon[style*="#FFD700"] {
+	/* background-color: #ffd700; */
+}
+
+/* Page break for print */
+.page-break {
+	page-break-after: always;
+}
+
+/* アニメーション効果を任意にコメントアウト */
+/* Animations (preview only) */
+
+/* Markdown 画像のスタイル */
+.markdown-image {
+	max-width: 100%;
+	margin: 10px 0;
+	border-radius: 4px;
+	display: block;
+}
+
+/* Print settings */
+@media print {
+	body {
+		background-color: white !important;
+	}
+
+	.chat-container {
+		page-break-inside: avoid;
+	}
+}
+</style>
+  </head>
+  <body>
+  <div class="chat-container" id="section-1">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            金髪ちゃーん！見て見て！新しいイヤホン、買っちゃった！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            お、マジじゃん！どれどれ？…って、これ結構いいやつじゃん！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            でしょでしょ！でもね、今まで使ってたやつと、なんか音の感じが全然違うの。なんでだろ？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            はっはーん、さてはあんた、<strong>周波数応答（しゅうはすうおうとう）</strong>の洗礼を受けたな！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-2">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            しゅ、しゅうはすうおうとう…？なにそれ、必殺技の名前？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            まあ、ある意味そうかも！前に『音の高さは周波数で決まる』って習ったでしょ？周波数応答ってのは、イヤホンが<strong>『どの周波数を、どれくらいの音量（デシベル）で再生するのが得意か』</strong>っていう、性能グラフのことよ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            へぇ〜！イヤホンにも性格みたいなのがあるんだ！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そゆこと！例えば、あんたが買ったみたいな<strong>ドンシャリ系</strong>のイヤホンは、ベースとかバスドラの低音（低い周波数）と、シンバルとかのシャリシャリした高音（高い周波数）を、他の音域より大きいデシベルで再生するの。ロックとかEDM聴くには最高っしょ？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            なるほど！だから、前のイヤホンより迫力があるように聞こえるんだ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-3">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            じゃあ、他の性格のイヤホンもあるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            もちろん！ボーカルとかギターのメロディが一番聞こえやすい<strong>カマボコ型</strong>とか、プロの人が使う、超フラットで味付けゼロの<strong>モニター系</strong>とかね。クラシックとかジャズ聴くなら、変にドンシャリしてない方が気持ちよかったりするわけ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            どうしてそんなに違いが生まれるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それはね、音を出す心臓部、<strong>ドライバーユニット</strong>の作りが違うから！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-4">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            どらいばーゆにっと？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そう！スピーカーみたいに空気を震わせる部品のこと。安いやつに多い<strong>ダイナミック型</strong>はパワフルな低音が得意だし、高級機に多い<strong>BA型（バランスド・アーマチュア）</strong>ってのは、超繊細で解像度の高い音を出すのが得意なの。最近は両方積んだハイブリッド型とかもあって、マジ沼よ！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            へぇ〜！そんなことになってるんだ、イヤホンの中って！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-5">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            で、そのイヤホンの性格は、<strong>周波数応答グラフ</strong>っていうので見れんの。横軸が音の高さ（周波数）で、縦軸が音量（デシベル）。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            どんな形なの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            あんたの買ったドンシャリ系は、低音と高音の部分がグワッと上がった<strong>V字型</strong>になってるはず！逆にプロ用のモニターイヤホンは、一直線の<strong>フラット</strong>なグラフ。見た目で性格がわかるって、面白くない？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ほんとだ！グラフで見たら、どの音楽に合うか分かりやすいかも！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-6">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            最近よく聞く<strong>ハイレゾ</strong>っていうのも、この周波数応答と関係あるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            おお、いい質問！ハイレゾ音源って、CDには入ってない、人間には聞こえないはずの超高い周波数の音まで記録されてんの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            聞こえないのに、意味あるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            それが、あるって言われてんのよ！その超高周波が、聞こえる音の<strong>空気感とか、リアルさ</strong>に影響してるらしくて。ハイレゾ対応のイヤホンは、その超高周波までちゃんと再生できるように作られてるってわけ。ロマンじゃん？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-7">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            じゃあ、音楽を作ってるプロの人は、どんなイヤホンを使ってるの？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            プロはね、<strong>モニターヘッドホン</strong>か<strong>モニターイヤホン</strong>ってのを使うの。リスニング用みたいに『いい音』に加工するんじゃなくて、録音された音を、良いとこも悪いとこも、ありのままの周波数バランスで再生するのが使命！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_smile.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            へぇ〜！お化粧してない、すっぴんの音を聴くためのイヤホンなんだね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_norm.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            そうそう！じゃないと、どこを直せばいいかわかんないからね。音楽を『作る』のと『楽しむ』のじゃ、道具も全然違うってこと！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-8">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            自分にぴったりのイヤホンって、どうやって見つけたらいいかなぁ？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_shout.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right shout">
+            それはもう、<strong>試聴あるのみ！</strong>お店に行って、いっつも聴いてる曲をいろんなイヤホンで聴き比べてみるの！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question2.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            試聴の時って、何に気をつければいい？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            まずは、好きなボーカルの声が気持ちよく聞こえるか！あとは、ベースの音がボワボワしてないか、シンバルの音がシャリシャリうるさすぎないか、とかね。値段が高いからって、自分好みとは限らないのが、この世界の面白いとこよ！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-9">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            そっかぁ…。イヤホン一つで、こんなに音楽の聞こえ方が変わるんだね！奥が深い！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/blonde_smile.png" class="chat-icon-img" alt="Blonde">
+          </div>
+          <div class="chat-bubble blonde right norm">
+            でしょー！イヤホンは、ミュージシャンが届けたい音を、一番近くで感じられる超重要なアイテムなんだから！いいイヤホンは、いつもの曲から、今まで聞こえなかった新しい音を発見させてくれる宝箱みたいなもんよ！
+          </div>
+        </div>
+      </div>
+  </body>
+  </html>
+  

@@ -41,7 +41,8 @@ darkhair:right:smile "まあ、そんなとこですわ。"
 
 mercury:left:question2 "でも、この 3 つがあれば、それだけで音楽になるの？"
 
-darkhair:right:norm "基本的にはそうですが、<br> 現代音楽ではこれらの概念を超えた作品も多いですわ。"
+darkhair:right:norm "基本的にはそうだけど,
+現代音楽ではこれらの概念を超えた作品も多いのよ。"
 
 mercury:left:question2 "どういうこと？"
 
@@ -65,4 +66,4 @@ darkhair:right:norm "鋭い質問ですわ。<br>**リズム・メロディ・�
 
 mercury:left:smile "うん！音ってどうやってできるの？"
 
-darkhair:right:boast "では次回は、「**音**」そのものの正体に迫ってみましょう！"
+darkhair:right:boast "次は、「**音**」そのものの正体に迫ってみましょう！"
