@@ -1,0 +1,781 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Preview</title>
+    <style>/* Base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #fff; /* 背景色を変更 */
+	font-family: "Hiragino Sans", "Meiryo", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.chat-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.chat-title {
+	font-size: 1.5em;
+	color: #333333;
+	margin-bottom: 0.5em;
+}
+
+.chat-subtitle {
+	font-size: 1.2em;
+	color: #666666;
+	margin-bottom: 1em;
+}
+
+/* Message layout */
+.chat-message {
+	display: flex;
+	align-items: flex-start;
+	margin: 10px 0;
+	width: 100%;
+}
+
+.chat-message.right {
+	flex-direction: row-reverse;
+}
+
+/* Border-image bubble styles */
+.chat-bubble {
+	position: relative;
+	max-width: 70%;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+/* Normal bubble style */
+.chat-bubble {
+	border-width: 30px; /* 実際の表示サイズ */
+	border-style: solid;
+	border-image-slice: 60 fill;
+	border-image-width: 30px;
+	border-image-repeat: stretch;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* 各バブルスタイルとその向き */
+.chat-bubble.norm.left {
+	border-image-source: url("./res/bubble_norm_left.png");
+}
+
+.chat-bubble.norm.right {
+	border-image-source: url("./res/bubble_norm_right.png");
+}
+
+.chat-bubble.think.left {
+	border-image-source: url("./res/bubble_think_left.png");
+}
+
+.chat-bubble.think.right {
+	border-image-source: url("./res/bubble_think_right.png");
+}
+
+.chat-bubble.shout.left {
+	border-image-source: url("./res/bubble_shout_left.png");
+}
+
+.chat-bubble.shout.right {
+	border-image-source: url("./res/bubble_shout_right.png");
+}
+
+/* キャラクター別テキストカラー */
+.chat-bubble.mercury {
+	color: #1d91d9;
+}
+
+.chat-bubble.darkhair {
+	color: #535353;
+}
+
+.chat-bubble.blonde {
+	color: #84803e;
+}
+
+.chat-bubble.glasses {
+	color: #7a7a7a;
+}
+
+/* Character icons */
+.chat-icon {
+	width: 100px; /* アイコンサイズを大きく */
+	height: 100px;
+	min-width: 50px; /* Prevent icon shrinking */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 10px;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+.chat-icon-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Flip icons when bubble direction is right */
+.chat-message.right .chat-icon-img {
+	transform: scaleX(-1);
+}
+
+.chat-icon-text {
+	font-size: 24px;
+}
+
+/* Character specific styles - アイコン背景色を無効化 */
+/* Mercury */
+.chat-icon[style*="#89CFF0"] {
+	/* background-color: #89cff0; */
+}
+
+/* Glasses */
+.chat-icon[style*="#A0A0A0"] {
+	/* background-color: #a0a0a0; */
+}
+
+/* Dark Hair */
+.chat-icon[style*="#36454F"] {
+	/* background-color: #36454f; */
+}
+
+/* Blonde */
+.chat-icon[style*="#FFD700"] {
+	/* background-color: #ffd700; */
+}
+
+/* Page break for print */
+.page-break {
+	page-break-after: always;
+}
+
+/* アニメーション効果を任意にコメントアウト */
+/* Animations (preview only) */
+
+/* Markdown 画像のスタイル */
+.markdown-image {
+	max-width: 100%;
+	margin: 10px 0;
+	border-radius: 4px;
+	display: block;
+}
+
+/* Print settings */
+@media print {
+	body {
+		background-color: white !important;
+	}
+
+	.chat-container {
+		page-break-inside: avoid;
+	}
+}
+</style>
+  </head>
+  <body>
+  <div class="chat-container" id="section-1">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            バッハの音楽には、現代の音楽理論の基礎がすべて詰まっておりますわ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-2">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            バッハ？確か昔の作曲家ですよね。どうしてそんなに重要なんですか？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-3">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            バッハは<strong>音楽の父</strong>と呼ばれる偉大な作曲家ですの。<br>彼の音楽はまるで<strong>音の骨組み</strong>を作ったようなものですわ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-4">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            音の骨組み！現代の音楽にも影響してるんですね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            黒髪ちゃん、クラシック音楽に詳しいよね。バロック音楽って何がすごいの？今の音楽とはずいぶん違うみたいだけど...
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            バロック音楽は1600年頃から1750年頃の音楽様式ですわ。特に<strong>ヨハン・セバスチャン・バッハ</strong>（1685-1750）は、音楽史上最も重要な人物の一人でございます。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            どうして重要なんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            バッハは<strong>対位法</strong>という技法を極めて、<br>複数のメロディーを同時に美しく響かせる技術を確立いたしました。<br>これが現代音楽の基礎になっておりますの。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            対位法？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-5">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            複数の独立したメロディーライン（<strong>声部</strong>）が、<br>お互いに絡み合いながら進行する技法ですわ。<br>まるで複数の人が同時に会話しているような音楽ですの。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            複数のメロディーが同時に！それって難しそうですね。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            とても高度な技術でございます。<br>バッハの<strong>「フーガ」</strong>という形式は、一つのメロディー（<strong>主題</strong>）を<br>複数の声部で模倣しながら発展させる、対位法の傑作ですわ。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            フーガって聞いたことあります！どんな仕組みなんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            最初に一つの声部が主題を提示し、次に別の声部が同じ主題を歌います。<br>そして最初の声部は<strong>対旋律</strong>という新しいメロディーを歌うのですわ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-6">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            対旋律？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            主題に対して美しく調和する、別のメロディーラインのことよ。<br>これが次々と重なって、まるで音楽的な建築物のような<br>構造を作り出すの。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            音楽的な建築物...美しい表現ですね！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            バッハの「<strong>平均律クラヴィーア曲集</strong>」は、<br>すべての調性（24の長調と短調）でフーガを作った不朽の名作ですわ。<br>今でも<strong>ピアニストの聖書</strong>と呼ばれておりますの。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            平均律って何ですか？
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-7">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            オクターブを12の等しい半音に分割する<strong>音律</strong>のことですわ。<br>バッハの時代には革新的で、これによって<br>すべての調での演奏が可能になりましたの。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            それまではできなかったんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            以前の音律では、特定の調は美しく響くけれど、<br>別の調では不協和になってしまったのです。<br>平均律の採用により、<strong>転調</strong>（調を変えること）の自由度が飛躍的に高まりましたわ。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            だから現代のピアノも平均律なんですね！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            その通りでございます。バッハの革新が現代まで続いているのですわ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-8">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            バロック音楽の特徴って他にもありますか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            <strong>通奏低音</strong>という技法が特徴的ですわ。<br>低音楽器（チェロやヴィオラ・ダ・ガンバ）と<br>和声楽器（チェンバロやリュート）が連続的な低音を奏でるのです。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            通奏低音？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            バロック音楽の<strong>骨格</strong>となる低音ラインですわ。<br>この上に美しいメロディーや対位法が展開されるのでございます。<br>現代の<strong>ベースライン</strong>の原型とも言えますわね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            現代のベースと関係があるんですね！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-9">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            バッハ以外にも有名なバロックの作曲家はいるんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            もちろんですわ！<strong>ヴィヴァルディ</strong>の「四季」、<br><strong>ヘンデル</strong>の「水上の音楽」、<strong>パッヘルベル</strong>の「カノン」など、<br>現代でもよく演奏される名曲がございます。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            ヴィヴァルディの「四季」は知ってます！すごく美しい曲ですよね。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            ヴィヴァルディは<strong>協奏曲</strong>の形式を確立した作曲家ですわ。<br>独奏楽器とオーケストラの対話という構造は、<br>現代のコンチェルトの原型でございます。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            協奏曲も現代に繋がってるんですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-10">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            バロック音楽を演奏する時の楽器って、現代と違うんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            <strong>古楽器</strong>という、当時の楽器を復元したものを使うことが多いですわ。<br><strong>チェンバロ</strong>、<strong>ヴィオラ・ダ・ガンバ</strong>、<strong>リコーダー</strong>、<br><strong>バロック・ヴァイオリン</strong>などですの。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            現代の楽器とどう違うんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            音色がより繊細で、装飾的な表現に適しているのです。<br>特にチェンバロは、現代のピアノとは全く違う<strong>撥弦楽器</strong>で、<br>独特の煌めくような音色がいたします。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            撥弦楽器？ギターみたいに弦を弾く楽器なんですね！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-11">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            バロック音楽の演奏で大切なことって何ですか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            <strong>装飾</strong>（<strong>オーナメント</strong>）の技法が重要ですわ。<br>トリル、モルデント、アルペッジョなど、楽譜に書かれていない装飾を<br>演奏者が即興で加えるのです。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            即興で装飾を？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            バロック時代の演奏家は、楽譜を<strong>創造的に解釈</strong>することが<br>求められていましたの。同じ曲でも演奏者によって<br>全く違う表現になるのが魅力ですわ。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            ジャズのアドリブみたいですね！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            まさにその通り！バロック音楽には即興性と創造性が息づいているのです。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-12">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            バロック音楽が現代音楽に与えた影響って具体的にありますか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            <strong>プログレッシブロック</strong>では、バッハの対位法やフーガの技法が<br>多用されていますわ。<strong>キング・クリムゾン</strong>や<strong>イエス</strong>などの楽曲に、<br>明確にバロック音楽の影響が見られます。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            ロック音楽にも影響してるんですか！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            <strong>ジャズ</strong>でも、バッハの和声進行は重要な研究対象ですわ。<br>現代の<strong>ポップス</strong>でも、バッハが確立した<strong>Ⅱ-Ⅴ-Ⅰ進行</strong>は<br>頻繁に使われておりますの。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            Ⅱ-Ⅴ-Ⅰ進行？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            調の2度、5度、1度の和音を順に進行させる<strong>カデンツ</strong>（終止形）ですわ。<br>最も自然で美しい和声進行として、<br>あらゆるジャンルで愛用されているのです。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-13">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            クラシック音楽を勉強したことがない人でも、バロック音楽を楽しめますか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            もちろんでございます！まずは有名な楽曲から聞いてみることを<br>お勧めいたします。<strong>バッハの「G線上のアリア」</strong>、<br><strong>パッヘルベルの「カノン」</strong>、<strong>ヴィヴァルディの「四季」</strong>などは親しみやすいですわ。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            聞くときのポイントはありますか？
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            <strong>メロディーラインを追いかけること</strong>ですわ。<br>特にフーガでは、主題がどの楽器で演奏されているかを<br>意識して聞くと、音楽の構造が見えてきますの。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            なるほど！メロディーを追いかけるんですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-14">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            バロック音楽って、数学と関係があるって聞いたことがあるんですが...
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            素晴らしい質問ですわ！バッハは数学的な比例や対称性を<br>音楽に応用した天才でございます。<strong>黄金比</strong>や<strong>フィボナッチ数列</strong>が<br>楽曲構造に使われていることもありますの。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            音楽と数学が繋がってるなんて神秘的ですね！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            バロック音楽は<strong>論理的美しさ</strong>と<strong>感情的表現</strong>が<br>完璧に調和した芸術ですわ。だからこそ300年以上経った今でも、<br>人々を魅了し続けているのでございます。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-15">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right think">
+            バロック音楽って、現代音楽の基礎を作った偉大な音楽なんですね。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            その通りでございます。バッハが確立した音楽理論は、<br>クラシックからジャズ、ロック、ポップスまで、<br>あらゆる音楽の基盤となっているのですわ。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            今度バッハの音楽をじっくり聞いてみます！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair left norm">
+            素晴らしい心がけでございますわ。音楽の<strong>建築美</strong>と<strong>数学的完璧さ</strong>を、<br>ぜひご堪能くださいませ。バロック音楽の奥深さに、<br>きっと魅了されることでしょう。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury right norm">
+            バロック音楽は音楽の基礎を築いた偉大な遺産なんですね。<br>現代音楽を理解するためにも、とても大切な音楽だということが<br>よくわかりました♪
+          </div>
+        </div>
+      </div>
+  </body>
+  </html>
+  

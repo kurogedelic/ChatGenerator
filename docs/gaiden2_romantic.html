@@ -1,0 +1,772 @@
+
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Preview</title>
+    <style>/* Base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #fff; /* 背景色を変更 */
+	font-family: "Hiragino Sans", "Meiryo", sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.chat-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+}
+
+.chat-title {
+	font-size: 1.5em;
+	color: #333333;
+	margin-bottom: 0.5em;
+}
+
+.chat-subtitle {
+	font-size: 1.2em;
+	color: #666666;
+	margin-bottom: 1em;
+}
+
+/* Message layout */
+.chat-message {
+	display: flex;
+	align-items: flex-start;
+	margin: 10px 0;
+	width: 100%;
+}
+
+.chat-message.right {
+	flex-direction: row-reverse;
+}
+
+/* Border-image bubble styles */
+.chat-bubble {
+	position: relative;
+	max-width: 70%;
+	word-break: break-word;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+/* Normal bubble style */
+.chat-bubble {
+	border-width: 30px; /* 実際の表示サイズ */
+	border-style: solid;
+	border-image-slice: 60 fill;
+	border-image-width: 30px;
+	border-image-repeat: stretch;
+	padding: 0px;
+	margin: 0px;
+}
+
+/* 各バブルスタイルとその向き */
+.chat-bubble.norm.left {
+	border-image-source: url("./res/bubble_norm_left.png");
+}
+
+.chat-bubble.norm.right {
+	border-image-source: url("./res/bubble_norm_right.png");
+}
+
+.chat-bubble.think.left {
+	border-image-source: url("./res/bubble_think_left.png");
+}
+
+.chat-bubble.think.right {
+	border-image-source: url("./res/bubble_think_right.png");
+}
+
+.chat-bubble.shout.left {
+	border-image-source: url("./res/bubble_shout_left.png");
+}
+
+.chat-bubble.shout.right {
+	border-image-source: url("./res/bubble_shout_right.png");
+}
+
+/* キャラクター別テキストカラー */
+.chat-bubble.mercury {
+	color: #1d91d9;
+}
+
+.chat-bubble.darkhair {
+	color: #535353;
+}
+
+.chat-bubble.blonde {
+	color: #84803e;
+}
+
+.chat-bubble.glasses {
+	color: #7a7a7a;
+}
+
+/* Character icons */
+.chat-icon {
+	width: 100px; /* アイコンサイズを大きく */
+	height: 100px;
+	min-width: 50px; /* Prevent icon shrinking */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 10px;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+.chat-icon-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Flip icons when bubble direction is right */
+.chat-message.right .chat-icon-img {
+	transform: scaleX(-1);
+}
+
+.chat-icon-text {
+	font-size: 24px;
+}
+
+/* Character specific styles - アイコン背景色を無効化 */
+/* Mercury */
+.chat-icon[style*="#89CFF0"] {
+	/* background-color: #89cff0; */
+}
+
+/* Glasses */
+.chat-icon[style*="#A0A0A0"] {
+	/* background-color: #a0a0a0; */
+}
+
+/* Dark Hair */
+.chat-icon[style*="#36454F"] {
+	/* background-color: #36454f; */
+}
+
+/* Blonde */
+.chat-icon[style*="#FFD700"] {
+	/* background-color: #ffd700; */
+}
+
+/* Page break for print */
+.page-break {
+	page-break-after: always;
+}
+
+/* アニメーション効果を任意にコメントアウト */
+/* Animations (preview only) */
+
+/* Markdown 画像のスタイル */
+.markdown-image {
+	max-width: 100%;
+	margin: 10px 0;
+	border-radius: 4px;
+	display: block;
+}
+
+/* Print settings */
+@media print {
+	body {
+		background-color: white !important;
+	}
+
+	.chat-container {
+		page-break-inside: avoid;
+	}
+}
+</style>
+  </head>
+  <body>
+  <div class="chat-container" id="section-1">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            クラシックって堅いイメージがあったけど、ショパンの曲はすごく感情的で美しいですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-2">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            それは<strong>ロマン派</strong>の音楽だからですわ。19世紀の作曲家たちは、個人の感情や内面を音楽で表現することを重視したのです。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-3">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            個人の感情？バロック音楽とは違うんですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-4">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            その通りでございます。バロック音楽が形式美を追求したのに対し、<br>ロマン派は<strong>自由な表現</strong>と<strong>情熱的な感情</strong>を音楽に込めたのですわ。<br>まさに「心の革命」ですわね！
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ショパンの「別れの曲」を聞いて感動したんだけど、どうしてあんなに心に響くんだろう？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            それは<strong>ロマン派音楽</strong>の特徴ですわ。19世紀（1800年頃〜1900年頃）の作曲家たちは、技巧よりも<strong>個人の感情</strong>や<strong>内面的な表現</strong>を重視したのでございます。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            個人の感情？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            バロック音楽が神への讃美や宮廷での演奏を目的としていたのに対し、ロマン派は作曲家の<strong>心の叫び</strong>や<strong>恋愛感情</strong>、<strong>郷愁</strong>といった、とても人間的な感情を音楽に込めたのですわ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            だからショパンの音楽は心に直接響くんですね！
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-5">
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            <strong>フレデリック・ショパン</strong>（1810-1849）は、ロマン派の代表的な作曲家ですわ。<strong>ピアノの詩人</strong>と呼ばれ、ピアノ音楽に革命をもたらしました。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ピアノの詩人？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            ショパンはピアノという楽器の可能性を極限まで追求し、まるで詩を朗読するような美しく繊細な表現を生み出したのです。彼の<strong>ノクターン</strong>（夜想曲）は、夜の静寂と内省的な美しさを見事に表現しておりますわ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ノクターンは本当に夜の雰囲気がしますね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            ショパンはポーランド出身で、祖国への愛と望郷の念が彼の音楽に深く刻まれていますの。<strong>「革命のエチュード」</strong>や<strong>「英雄ポロネーズ」</strong>には、祖国への熱い想いが込められておりますわ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-6">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            リストという作曲家も有名ですよね？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            <strong>フランツ・リスト</strong>（1811-1886）は、ロマン派のもう一つの巨星でございます。<strong>超絶技巧</strong>で知られ、<strong>ピアノの魔術師</strong>と呼ばれました。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            超絶技巧？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            人間の限界に挑戦するような、極めて高度な演奏技術のことですわ。リストの<strong>「ラ・カンパネラ」</strong>や<strong>「ハンガリー狂詩曲」</strong>は、現在でもピアニストにとって最高難度の作品とされておりますの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            そんなに難しいんですか！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            リストは現代の<strong>ヴィルトゥオーゾ</strong>（名人芸演奏家）の原型を作った人物でもあります。彼のコンサートには女性ファンが熱狂し、<strong>「リストマニア」</strong>という現象まで起こったのですわ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-7">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            まるで現代のロックスターみたいですね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            まさにその通りでございます！リストは演奏中に手袋を投げたり、ピアノの弦を切ってしまうほど激しく演奏したという逸話もありますの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ロマン派の他の作曲家はどうなんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            <strong>ロベルト・シューマン</strong>は文学的な感性を音楽に持ち込み、<strong>「詩人の恋」</strong>や<strong>「子供の情景」</strong>など、詩的なタイトルの作品を多く残しました。音楽と文学の融合を図ったのです。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            音楽と文学？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            ロマン派は<strong>標題音楽</strong>（物語や詩、絵画などからインスピレーションを得た音楽）を発達させました。ベルリオーズの<strong>「幻想交響曲」</strong>は、失恋の物語を音楽で描いた革新的な作品ですわ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-8">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ロマン派の音楽って、どんな特徴があるんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            まず<strong>自由な形式</strong>ですわ。バロック音楽の厳格な形式から解放され、作曲家の感情に従って自由に音楽を展開させるようになりました。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            自由な形式？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            例えば、<strong>即興曲</strong>や<strong>幻想曲</strong>といった形式は、決まった構造にとらわれない自由な表現を可能にしたのです。また、<strong>半音階</strong>を多用して、より複雑で表現豊かな和声を生み出しましたわ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            半音階って、ピアノの黒鍵も使うやつですね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            その通りでございます。半音階的な動きにより、微妙な感情の変化やもの悲しさを表現できるのです。ショパンの<strong>バラード</strong>には、この技法が見事に使われておりますわ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-9">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            楽器の発達も関係してるんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            大いに関係がございますわ！19世紀には<strong>現代ピアノ</strong>が完成し、より大きな音量と豊かな表現力を手に入れました。鉄骨フレームの採用により、強い張力に耐えられるようになったのです。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            それまでのピアノとどう違うんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            音域が拡大し、音量も格段に増しました。これにより、オーケストラと対等に渡り合える<strong>ピアノ協奏曲</strong>が発達したのです。シューマンやグリーグのピアノ協奏曲は、この時代の傑作ですわ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            楽器の進歩が音楽も進歩させたんですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-10">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ロマン派の演奏で大切なことって何ですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            <strong>ルバート</strong>という技法が重要ですわ。テンポを微妙に揺らして、感情的な表現を豊かにする技術でございます。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ルバート？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            「盗まれた時間」という意味で、一部の音符を少し長く、別の音符を少し短くして、音楽に呼吸感と表情を与える技法ですの。ショパンはこの技法の名手でした。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            機械的じゃなくて、人間らしい表現なんですね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            まさにその通り！ロマン派音楽は<strong>演奏者の個性</strong>が重要な要素なのです。同じ楽譜でも、演奏者によって全く違う表現になりますわ。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-11">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ロマン派音楽の現代への影響はありますか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            映画音楽に大きな影響を与えておりますわ。<strong>ジョン・ウィリアムズ</strong>の「スター・ウォーズ」や「E.T.」などは、ロマン派の感情的表現力を受け継いでいるのです。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_shock.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            スター・ウォーズも！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            <strong>ポップス</strong>でも、バラードの感情的な表現はロマン派の流れを汲んでいますわ。ビートルズの「Yesterday」やエルトン・ジョンの楽曲にも、ロマン派的な情感が感じられますの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_lightbulb.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            現代の感動的な音楽のルーツがロマン派なんですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-12">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ロマン派の作曲家の生き方も情熱的だったんですか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            とても波乱に富んだ人生を送った作曲家が多いですわ。ショパンと作家ジョルジュ・サンドの恋愛関係は有名ですし、リストも多くの女性との恋愛遍歴がございました。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            恋愛が音楽に影響したんですね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            ロマン派は<strong>芸術家の生き方</strong>そのものが作品に反映される時代でした。シューマンの精神的な病気、ショパンの肺結核による短い生涯...人生の苦悩が音楽を深めたのです。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left think">
+            芸術と人生が一体になってたんですね。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-13">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ロマン派音楽を聞く時のコツはありますか？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            <strong>感情移入</strong>することが一番大切ですわ。技術的な分析よりも、音楽が伝えようとする感情に素直に身を委ねることですの。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            感情移入？
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            ショパンの<strong>バラード第1番</strong>を聞く時は、恋の物語を想像してみてください。リストの<strong>「愛の夢」</strong>では、甘美な恋愛感情に浸ってみるのです。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            音楽で物語を感じるんですね！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            ロマン派音楽は<strong>心の音楽</strong>ですわ。理屈ではなく、感情で受け止めることで、その真の美しさが理解できるのでございます。
+          </div>
+        </div>
+      </div><div class="page-break"></div><div class="chat-container" id="section-14">
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left think">
+            ロマン派音楽って、とても人間らしい音楽なんですね。
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_smile.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            その通りでございます。個人の感情を何よりも大切にし、音楽を通じて心の奥底にある想いを表現した時代ですわ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_question.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            今度、ショパンやリストの音楽をもっと聞いてみます！
+          </div>
+        </div>
+      
+        <div class="chat-message right">
+          <div class="chat-icon" >
+            <img src="./icons/darkhair_norm.png" class="chat-icon-img" alt="Dark Hair">
+          </div>
+          <div class="chat-bubble darkhair right norm">
+            素晴らしいお考えですわ。<strong>感情の豊かさ</strong>と<strong>技巧の美しさ</strong>が完璧に融合したロマン派音楽の魅力を、ぜひ心ゆくまでお楽しみくださいませ。
+          </div>
+        </div>
+      
+        <div class="chat-message left">
+          <div class="chat-icon" >
+            <img src="./icons/mercury_norm.png" class="chat-icon-img" alt="Mercury">
+          </div>
+          <div class="chat-bubble mercury left norm">
+            ロマン派は音楽に感情の翼を与えた時代なんですね。人間の心の奥深さを音楽で表現する素晴らしさがよくわかりました♪
+          </div>
+        </div>
+      </div>
+  </body>
+  </html>
+  
