@@ -1,26 +1,37 @@
 {
   "name": "chat-generator",
-  "version": "1.0.0",
-  "description": "Chat image generator with live preview and export",
+  "version": "1.0.1",
+  "description": "A CLI tool to generate chat-style images and HTML from simple Markdown files.",
   "main": "index.js",
   "bin": {
     "chat-generator": "./index.js"
   },
+  "files": [
+    "index.js",
+    "res",
+    "styles.css"
+  ],
   "scripts": {
-    "init": "node index.js init",
-    "preview": "node index.js preview",
-    "preview:ep2": "node index.js preview dtm-episode2-chat.md --watch",
-    "preview:image-test": "node index.js preview image-test.md --watch",
-    "preview:file": "node index.js preview",
-    "export": "node index.js export",
-    "export:ep2": "node index.js export dtm-episode2-chat.md",
-    "export:image-test": "node index.js export image-test.md",
-    "export:file": "node index.js export",
-    "html": "node index.js html",
-    "summary": "node summary.js",
-    "build:docs": "node build-docs.js",
-    "start": "npm run preview"
+    "start": "npm run preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kurogedelic/ChatGenerator.git"
+  },
+  "keywords": [
+    "chat",
+    "generator",
+    "image",
+    "markdown",
+    "cli"
+  ],
+  "author": "kurogedelic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kurogedelic/ChatGenerator/issues"
+  },
+  "homepage": "https://github.com/kurogedelic/ChatGenerator#readme",
   "dependencies": {
     "chokidar": "^4.0.3",
     "commander": "^13.1.0",
@@ -30,7 +41,5 @@
     "open": "^10.1.0",
     "puppeteer": "^24.6.0",
     "socket.io": "^4.8.1"
-  },
-  "author": "",
-  "license": "MIT"
+  }
 }
