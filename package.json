@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Chat image generator with live preview and export",
   "main": "index.js",
+  "bin": {
+    "chat-generator": "./index.js"
+  },
   "scripts": {
     "init": "node index.js init",
     "preview": "node index.js preview",
@@ -23,6 +26,7 @@
     "commander": "^13.1.0",
     "express": "^5.1.0",
     "js-yaml": "^4.1.0",
+    "lodash.merge": "^4.6.2",
     "open": "^10.1.0",
     "puppeteer": "^24.6.0",
     "socket.io": "^4.8.1"
