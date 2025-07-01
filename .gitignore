@@ -29,3 +29,7 @@ output/
 
 # Cache
 .cache/
+# Local dev files
+CLAUDE.md
+GEMINI.md
+.DS_Store
