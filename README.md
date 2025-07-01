@@ -19,15 +19,14 @@ This tool allows you to write dialogue in a structured Markdown format and expor
 You can install this tool globally via NPM:
 
 ```bash
-npm install -g .
+npm install -g chat-generator
 ```
 
 Or, you can install it as a development dependency in your project:
 
 ```bash
-npm install --save-dev .
+npm install --save-dev chat-generator
 ```
-*(Note: For now, you need to clone this repository to install it. It will be published to NPM soon.)*
 
 ## Quick Start
 
